@@ -1,1 +1,1 @@
-# CSC490-Stonkspeare
+# CSC490-League-Stat-Manager
