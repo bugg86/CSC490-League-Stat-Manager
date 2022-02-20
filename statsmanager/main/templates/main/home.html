@@ -12,6 +12,7 @@ Home
 <nav>
     <ul>
         {% if user.is_authenticated %}
+            <li>Signed in as {{ user.username }}</li>
             <li><a href="/logout">Logout</a></li>
             <li><a href="/player_data">Player Data</a></li>
         {% else %}
