@@ -1,0 +1,29 @@
+{% extends 'main/base.html' %}
+
+
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block header %}
+<h1> League Stat Manager </h1>
+
+<nav>
+    <ul>
+        {% if user.is_authenticated %}
+            <li><a href="/logout">Logout</a></li>
+            <li><a href="/player_data">Player Data</a></li>
+        {% else %}
+            <li><a href="/register">Register</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/player_data">Player Data</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% endblock %}
+
+{% block article %}
+<h3>Home Page</h3>
+{% endblock %}

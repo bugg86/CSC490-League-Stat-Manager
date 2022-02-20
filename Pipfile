@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 django = {extras = ["argon2"], version = "4.0.2"}
+django-crispy-forms = "1.14.0"
+mssql-django = "1.1.2"
 
 [dev-packages]
 
