@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style></style>
+        <title>{% block title %}League Stat Manager{% endblock %}</title>
+    </head>
+
+    <body>
+        <header>
+            {% block header %}
+            {% endblock %}
+        </header>
+
+        <nav>
+            {% block nav %}
+            {% endblock %}
+        </nav>
+
+        <article>
+            {% block article %}
+            {% endblock %}
+        </article>
+
+        <aside>
+            {% block aside %}
+            {% endblock %}
+        </aside>
+
+        <footer>
+            {% block footer %}
+            {% endblock %}
+        </footer>
+
+        <div id="body", name="body">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+    </body>
+</html>
