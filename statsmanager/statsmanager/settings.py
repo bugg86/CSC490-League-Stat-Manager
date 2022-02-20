@@ -25,6 +25,9 @@ SECRET_KEY = 'django-insecure-ya!g-dpg1^a(%%0@gj_&qzx9^$41i4vx7f5x4bil*00v*!$^k@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# ALLOWED_HOSTS = ['https://csc490-lsm.azurewebsites.net', 'csc490-lsm.azurewebsites.net']
+
+# Uncomment this, change DEBUG to False, uncomment out the below array and comment out the above array for production, put everything back for test.
 ALLOWED_HOSTS = []
 
 
@@ -132,6 +135,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
