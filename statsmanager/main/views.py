@@ -1,11 +1,10 @@
-from winreg import REG_RESOURCE_REQUIREMENTS_LIST
 from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
 
-def home(reuqest):
-    return render(reuqest, 'main/home.html')
+def home(request):
+    return render(request, 'main/home.html')
 
 def player_data(request):
     return render(request, 'main/player_data.html')
