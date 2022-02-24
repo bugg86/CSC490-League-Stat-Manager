@@ -30,6 +30,8 @@ DEBUG = True
 # Uncomment this, change DEBUG to False, uncomment out the below array and comment out the above array for production, put everything back for test.
 ALLOWED_HOSTS = []
 
+CSRF_TRUSTED_ORIGINS = ['https://csc490-lsm.azurewebsites.net', 'csc490-lsm.azurewebsites.net']
+
 
 # Application definition
 
