@@ -1,24 +1,24 @@
-<!--{% extends 'main/base.html' %} -->
+{% extends 'main/base.html' %}
 <html>
  <head> 
     <link rel="stylesheet" href="../style.css">
  </head> 
 
  <body>
-<!--{% block title %}-->
+{% block title %}
 Sign in
-<!--{% endblock %}
+{% endblock %}
 
 {% load crispy_forms_tags %}
 
-{% block article %}-->
+{% block article %}
     <div class="contnet-section">
         <form method="POST" class="form-group">
-        <!--    {% csrf_token %}
-            {{form|crispy}}-->
+            {% csrf_token %}
+            {{form|crispy}}
             <button type="submit" class="btn btn-primary">Sign in</button>
     </div>
     <a href="{% url 'password_reset' %}">Forgot password?</a>
-<!--{% endblock %}-->
+{% endblock %}
 </body>
 </html>
