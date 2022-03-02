@@ -1,5 +1,5 @@
 body {
-    background-color: lightgray;
+    background-color: rgb(255, 0, 0);
     color: hsl(0, 0%, 4%);
     /* text-align: center;*/
     margin-top: 50px;
@@ -8,4 +8,8 @@ body {
 button {
     background-color: rgb(60, 164, 196);
     font-size: 20px;
+}
+
+li a {
+    color: green;
 }
