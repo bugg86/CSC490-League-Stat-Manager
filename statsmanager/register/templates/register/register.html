@@ -6,15 +6,18 @@
 <body>
 {% block title %}Register{% endblock %}
 
+{% block header %} <h1> Register </h1> {% endblock %}
+
 {% load crispy_forms_tags %}
 
 {% block article %}
 	<div class="content-section">
 		<form method="POST" class="form-group">
 			{% csrf_token %}
-			<legend class="border-bottom mb-3">Create an Account</legend>
+			<legend class="border-bottom mb-3"> <h3>Create an Account</h3></legend>
 			{{form|crispy}}
 			<button name="create", type="submit", class="btn btn-success">Register</button>
+			<p>Already have an account? <a href='/login'>Log in</a></p>
 		</form>
 	</div>
 {% endblock %}
