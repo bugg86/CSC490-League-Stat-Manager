@@ -1,0 +1,68 @@
+# -*- coding: utf-8 -*-
+from riotwatcher import LolWatcher, ApiError
+import pandas as pd
+
+# golbal variables
+api_key = 'RGAPI-2dc4b492-c582-4ffa-abbe-a005d3146dfd'
+watcher = LolWatcher(api_key)
+my_region = 'na1'
+region = 'americas'
+
+me = watcher.summoner.by_name(my_region, 'jmei13')
+print(me)
+
+puuid_get = me['puuid']
+
+
+my_ranked_stats = watcher.league.by_summoner(my_region, me['id'])
+print(my_ranked_stats)
+
+
+print(puuid_get)
+
+my_matches = watcher.match.matchlist_by_puuid(region, puuid_get, count = 10)
+
+print(my_matches)
+
+# last match detail
+last_match = my_matches[0]
+match_detail = watcher.match.by_id(region, last_match)
+
+print(last_match)
+
+participants = []
+for row in match_detail['info']['participants']:
+    participants_row = {}
+    participants_row['champion'] = row['championId']
+    participants_row['spell1'] = row['spell1Casts']
+    participants_row['spell2'] = row['spell2Casts']
+    participants_row['win'] = row['win']
+    participants_row['kills'] = row['kills']
+    participants_row['deaths'] = row['deaths']
+    participants_row['assists'] = row['assists']
+    participants_row['totalDamageDealt'] = row['totalDamageDealt']
+    participants_row['goldEarned'] = row['goldEarned']
+    participants_row['champLevel'] = row['champLevel']
+    participants_row['totalMinionsKilled'] = row['totalMinionsKilled']
+    participants_row['item0'] = row['item0']
+    participants_row['item1'] = row['item1']
+    participants.append(participants_row)
+df = pd.DataFrame(participants)
+df
+
+
+latest = watcher.data_dragon.versions_for_region(my_region)['n']['champion']
+static_champ_list = watcher.data_dragon.champions(latest, False, 'en_US')
+
+# champ static looking up
+champ_dict = {}
+for key in static_champ_list['data']:
+    row = static_champ_list['data'][key]
+    champ_dict[row['key']] = row['id']
+for row in participants:
+    print(str(row['champion']) + ' ' + champ_dict[str(row['champion'])])
+    row['championName'] = champ_dict[str(row['champion'])]
+
+# print dataframe
+df = pd.DataFrame(participants)
+df

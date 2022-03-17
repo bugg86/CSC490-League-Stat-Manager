@@ -1,0 +1,21 @@
+
+from riotwatcher import LolWatcher, ApiError
+import pandas as pd
+
+
+# golbal variables
+api_key = 'RGAPI-2dc4b492-c582-4ffa-abbe-a005d3146dfd'
+watcher = LolWatcher(api_key)
+my_region = 'na1'
+region = 'americas'
+
+me = watcher.summoner.by_name(my_region, 'Strova')
+print(me)
+
+lolid = me['id']
+
+print(lolid)
+
+lolgameCurrent = watcher.spectator.by_summoner(my_region, lolid)
+
+print(lolgameCurrent)
