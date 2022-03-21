@@ -5,5 +5,12 @@ Summoner Data
 {% endblock %}
 
 {% block article %}
-<h3>Summoner Data Page</h3>
+    <h3>Summoner Data Page</h3>
+    {% if summoner %}
+        <h1>You Searched For {{ summoner }}</h1>
+        <br/>
+    {% endif %}
+    {% comment %} <div class="summoner"> {% endcomment %}
+
+
 {% endblock %}

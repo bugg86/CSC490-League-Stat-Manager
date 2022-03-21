@@ -28,11 +28,11 @@ Home
 {% block article %}
 <h3>Home Page</h3>
 <div class="search-form-containter">
-    <form method = "GET" action = "{% url 'search_summoner' %}">
+    <form method = "GET" action = "{% url 'summoner_info' %}">
         {% csrf_token %}
 
-        <input type="search" placeholder="insert summoner name here...">
-        <button name="searchbtn" type="submit" class="btn btn-outline-secondary">Search</button>
+        <input q="name" type="search" placeholder="insert summoner name here...">
+        <button type="submit" class="btn btn-outline-secondary">Search</button>
     </form>
 </div>
 {% endblock %}

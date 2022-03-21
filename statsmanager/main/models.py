@@ -11,6 +11,4 @@ class Summoner(models.Model):
     summonerLevel = models.IntegerField()
     
     def __str__(self):
-        return self.id + ' ' + self.accountid + ' ' + \
-            self.puuid + ' ' + self.name + ' ' + self.profileIconId\
-                + ' ' + self.revisiionDate + ' ' + self.summonerLevel
+        return self.name
