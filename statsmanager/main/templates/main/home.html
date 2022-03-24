@@ -23,6 +23,16 @@ Home
 
 {% endblock %}
 
+{% load crispy_forms_tags %}
+
 {% block article %}
 <h3>Home Page</h3>
+<div class="search-form-containter">
+    <form method = "GET" class="form-group">
+        {% csrf_token %}
+        {{form|crispy}}
+        {% comment %} <input q="name" type="search" placeholder="insert summoner name here..."> {% endcomment %}
+        <button type="submit" class="btn btn-outline-secondary">Search</button>
+    </form>
+</div>
 {% endblock %}
