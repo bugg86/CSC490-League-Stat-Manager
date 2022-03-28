@@ -1,3 +1,7 @@
 Django==4.0.2
+djangorestframework==3.13.1
+mssql-django==1.1.2
+django-crispy-forms
+argon2-cffi
 requests==2.27.1
 riotapiutilities==1.1.3
