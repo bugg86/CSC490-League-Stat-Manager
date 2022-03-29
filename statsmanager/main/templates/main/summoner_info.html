@@ -4,8 +4,15 @@
 Summoner Data
 {% endblock %}
 
+{% block header %}
+<h1>Summoner Data Page</h1>
+{% endblock %}
+
+{% block nav %}
+<a href="/">Home</a>
+{% endblock %}
+
 {% block article %}
-    <h3>Summoner Data Page</h3>
     {% if summoner %}
         <h1><pre>{{ summoner | pprint }}</pre></h1>
         <br/>
@@ -13,7 +20,4 @@ Summoner Data
             <pre>{{ matches | pprint }}</pre>
         </P>
     {% endif %}
-    {% comment %} <div class="summoner"> {% endcomment %}
-
-
 {% endblock %}

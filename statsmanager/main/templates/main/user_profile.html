@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+User Profile
+{% endblock %}
+
+{% block header %}
+<h1> User Profile Page </h1>
+{% endblock %}
+
+{% block nav %}
+<a href="/">Home</a>
+{% endblock %}
+
+{% block article %}
+
+<h4>Username: {{ user.username }}</h4>
+<p>Email: {{ user.email }}</p>
+
+<p>Favorite Summoners: </p>
+
+{% endblock %}

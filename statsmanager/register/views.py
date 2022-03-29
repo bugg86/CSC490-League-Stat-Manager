@@ -13,6 +13,6 @@ def register(request):
             form.save()
             return redirect("/")
     else:
-        return redirect("/")
+        form = RegistrationForm()
         
     return render(request, 'register/register.html', {"form": form})
