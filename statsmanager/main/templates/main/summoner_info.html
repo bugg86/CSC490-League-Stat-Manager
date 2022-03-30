@@ -17,6 +17,9 @@ Summoner Data
         <h1><pre>{{ summoner | pprint }}</pre></h1>
         <br/>
         <p>
+            {% comment %} {% for k, v in matches.items %}
+                {{ k }} : {{ v }}<br />
+            {% endfor %} {% endcomment %}
             <pre>{{ matches | pprint }}</pre>
         </P>
     {% endif %}
