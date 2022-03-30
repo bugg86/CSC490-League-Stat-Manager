@@ -31,8 +31,8 @@ def home(request):
     return render(request, 'main/home.html', {'form': form})
 
 
-def user_data(request):
-    return render(request, 'main/user_data.html')
+def user_profile(request):
+    return render(request, 'main/user_profile.html')
 
 
 def win_perc_calculator(request):
@@ -92,8 +92,7 @@ def load_summoner_matches(puuid):
         print("=====requesting RIOT API=====")
         matches[match] = riot.get_match_by_match_id(match) 
     
-    return matches
-    
+    return matches   
     
 def summoner_info(request):
     return render(request, 'main/summoner_info.html')
