@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3e40b7307c0aa76e980beb0849239ba17abc4ecd02c2ed78b3e6b0f68273add4"
+            "sha256": "be6d6142129347f1be44533adc0f3bbc58cec5da66d37bc030fe061beaaa6479"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -177,6 +177,14 @@
             "markers": "python_version >= '3'",
             "version": "==3.3"
         },
+        "lsmrestapiutilities": {
+            "hashes": [
+                "sha256:759a510e59a0a727e78e9e428389eae79463c1babc94218009551309f73fc57c",
+                "sha256:895992c3033498e7b743218dc9759710a1edce81f29c3abd08dd3392606ac0ca"
+            ],
+            "index": "pypi",
+            "version": "==1.1.3"
+        },
         "mssql-django": {
             "hashes": [
                 "sha256:56d1ef92dbb76a9f982818161c7361ea8426cbbe23632f7ded2d5d800806efbc",
@@ -227,11 +235,11 @@
         },
         "riotapiutilities": {
             "hashes": [
-                "sha256:d75457b6ea32b7ded649ba4184094a7096e66406ddc4c92dc402bffd3df95171",
-                "sha256:e6f5c62e36f677a7c3af4fb249dceb8524997731912cc831a0ee0060e5c9e0af"
+                "sha256:5a3cc0f0c69ff7beca981fc09c78f580a6553320b986483082729f6160d8d644",
+                "sha256:85a823e13fdcb7088c7421c618d8722b5db6083016abaff891adafb54396d3d0"
             ],
             "index": "pypi",
-            "version": "==1.1.3"
+            "version": "==1.2.1"
         },
         "sqlparse": {
             "hashes": [

@@ -9,6 +9,7 @@ django-crispy-forms = "1.14.0"
 mssql-django = "1.1.2"
 requests = "2.27.1"
 riotapiutilities = "*"
+lsmrestapiutilities = "*"
 
 [dev-packages]
 
