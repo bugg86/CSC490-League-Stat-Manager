@@ -161,6 +161,11 @@ def load_league(summoner_id):
 
 def load_summoner_matches(puuid):
     
+    # check if summoner has matches in our database
+    rest_response = search_restapi(SearchType.MATCHES, puuid)
+    if rest_response != 404:
+        return rest_response
+    
     rest_response = search_restapi(SearchType.MATCHES, puuid)
     if rest_response != 404:
         return rest_response
@@ -181,7 +186,7 @@ def load_summoner_matches(puuid):
     
     rest = RESTAPI(RESTAPI_KEY)
     for match in matches:
-        rest_response = rest.post_championMastery(match)
+        rest_response = rest.post_all_match_data(match)
         if rest_response.status_code != 201:
             print("Something went wrong while saving the sommoner to the database", rest_response.status_code)
     
@@ -203,7 +208,7 @@ def search_restapi(search_type, search_value):
     elif search_type == SearchType.MATCHES:
         print('=====requesting RIOT API for match ids=====')
         rest_response = rest.get_matchparticipant_by_puuid(search_value)
-        rest_response = rest.get_match_by_id(search_value)
+        # rest_response = rest.get_match_by_id(search_value)
         if len(rest_response) == 0:
             return 404
         else:
