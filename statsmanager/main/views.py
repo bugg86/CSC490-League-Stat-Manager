@@ -190,9 +190,10 @@ def load_summoner_matches(puuid):
         matches[match] = riot.get_match_by_match_id(match)
     
     rest = RESTAPI(RESTAPI_KEY)
-    for match in matches:
-        rest_response = rest.post_championMastery(match)
-        if rest_response.status_code != 201:
+    
+    for match in matches.values():
+        rest_response = rest.post_all_match_data(match)
+        if rest_response != True:
             print("Something went wrong while saving the sommoner to the database", rest_response.status_code)
     
     
