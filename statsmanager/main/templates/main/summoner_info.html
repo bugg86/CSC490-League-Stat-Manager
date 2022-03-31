@@ -1,23 +1,62 @@
 {% extends 'main/base.html' %}
-
-{% block title %}
-Summoner Data
-{% endblock %}
-
-{% block header %}
-<h1>Summoner Data Page</h1>
-{% endblock %}
-
-{% block nav %}
-<a href="/">Home</a>
-{% endblock %}
-
+{% block title %}Summoner Data{% endblock title %}
+{% block header %}<h1>Summoner Data Page</h1>{% endblock header %}
+{% block nav %}<a href="/">Home</a>{% endblock nav %}
 {% block article %}
     {% if summoner %}
-        <h1><pre>{{ summoner | pprint }}</pre></h1>
-        <br/>
-        <p>
-            <pre>{{ matches | pprint }}</pre>
-        </P>
+        <h1>
+            <pre>{{ summoner | pprint }}</pre>
+        </h1>
+        <div class="Matches">
+            <h2>Recent Matches</h2>
+            <br />
+            {% for k, v in matches.items %}
+                <details>
+                    <summary>
+                        {{ k }}
+                        <br />
+                    </summary>
+                    <p>
+                        <pre>{{ v | pprint }}</pre>
+                    </p>
+                </details>
+            {% endfor %}
+        </div>
+        <div class="League">
+            <h2>League</h2>
+            <br />
+            <pre>{{ league | pprint }}</pre>
+        </div>
+        <div class="ChampionMastery">
+            <h2>Champion Mastery</h2>
+            <br />
+            {% for champions in mastery%}
+                <details>
+                    <summary>
+                        {{ champions.championId }}
+                        <br />
+                    </summary>
+                    <p>
+                        <pre>{{ champions | pprint }}</pre>
+                    </p>
+                </details>
+            {% endfor %}
+            {% comment %} {% for k, v in mastery.items %}
+                <details>
+                    <summary>
+                        {{ k }}
+                        <br />
+                    </summary>
+                    <p>
+                        <pre>{{ v | pprint }}</pre>
+                    </p>
+                </details>
+            {% endfor %} {% endcomment %}
+        </div>
+        {% comment %} <p>
+        {% endcomment %}
+        {% comment %} {% for k, v in matches.items %}                {{ k }} : {{ v }}<br />{% endfor %} {% endcomment %}
+        {% comment %} <pre>{{ matches.keys | pprint }}</pre> {% endcomment %}
+        {% comment %} </P> {% endcomment %}
     {% endif %}
 {% endblock %}
