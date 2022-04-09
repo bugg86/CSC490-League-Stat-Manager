@@ -179,11 +179,11 @@
         },
         "lsmrestapiutilities": {
             "hashes": [
-                "sha256:4a6dd94b9e02be7965c162d328bcd5ee4523161583a61f5492ffedfeab48e381",
-                "sha256:5a1f7853268f168129341ab1bf85a24af72e3345b473f2a8cde15463b894cc40"
+                "sha256:51cac5b228efafa216d41888a3329e020184e18c179d8607be29245dc264dcef",
+                "sha256:ca0f14f18905e1faced807c224e6f3f470a071776ae3c4d2731942360dc1fcfa"
             ],
             "index": "pypi",
-            "version": "==1.2.2"
+            "version": "==1.3.1"
         },
         "mssql-django": {
             "hashes": [

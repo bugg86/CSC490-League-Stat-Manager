@@ -108,12 +108,14 @@ def search_summoner(summoner_name):
             return riot_response
 
         # lowercase keys because REST API needs lowercase keys (For now. Soon to be changed)
-        riot_response = {k.lower(): v for k, v in riot_response.items()}
-        print(riot_response)
+        # riot_response = {k.lower(): v for k, v in riot_response.items()}
+        # print(riot_response)
+        # print(riot_response['accountid'])
+        # riot_response_json = json.loads(riot_response.)
       
         # store the summoner object in our database
         # rest_response = req.post(url, data=riot_response, headers={'Authorization': RESRAPI_KEY})
-        rest_response = rest.post_summoner(riot_response[0])
+        rest_response = rest.post_summoner(riot_response)
 
         # if rest_response.status_code != 201:
         #     print("Something went wrong while saving the sommoner to the database", rest_response.status_code)
@@ -161,15 +163,20 @@ def load_league(summoner_id):
     print('=====requesting RIOT API for league=====')
     riot_response = riot.get_league_by_summoner_id(summoner_id)
     print(riot_response)
-    print(riot_response[0])
+    # print(riot_response[0])
     
     # rest = RESTAPI(RESRAPI_KEY)
     # rest_response = rest.post_league(riot_response[0])
     # the response returns an array of leagues by game mode, but we're only tracking regular league ranks.
     # we are going to ignore TFT ranks
-    return riot_response[0]
+    return riot_response
 
 def load_summoner_matches(puuid):
+    
+    # check if summoner has matches in our database
+    rest_response = search_restapi(SearchType.MATCHES, puuid)
+    if rest_response != 404:
+        return rest_response
     
     rest_response = search_restapi(SearchType.MATCHES, puuid)
     if rest_response != 404:
@@ -213,7 +220,7 @@ def search_restapi(search_type, search_value):
             return rest_response[0]
     elif search_type == SearchType.MATCHES:
         print('=====requesting RIOT API for match ids=====')
-        rest_response = rest.get_matchparticipant_by_puuid(search_value)
+        # rest_response = rest.get_matchparticipant_by_puuid(search_value)
         rest_response = rest.get_match_by_id(search_value)
         if len(rest_response) == 0:
             return 404
