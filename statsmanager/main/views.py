@@ -1,4 +1,6 @@
 from ast import Try
+from re import M
+from traceback import print_tb
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail, BadHeaderError
@@ -45,12 +47,13 @@ def home(request):
             
             try:
                 summoner_matches = load_summoner_matches(summoners['puuid'])
+                print(summoner_matches)
                 # summoner_matches = "Hello"
             
                 league = load_league(summoners['id'])
             
                 mastery = load_champion_mastery(summoners['id'])
-                print(mastery)
+                # print(mastery)
                 
             # if summoner does not exist in RIOT API
             except KeyError:
@@ -117,8 +120,8 @@ def search_summoner(summoner_name):
         # rest_response = req.post(url, data=riot_response, headers={'Authorization': RESRAPI_KEY})
         rest_response = rest.post_summoner(riot_response)
 
-        # if rest_response.status_code != 201:
-        #     print("Something went wrong while saving the sommoner to the database", rest_response.status_code)
+        if rest_response != True:
+            print("Something went wrong while saving the sommoner to the database", rest_response)
             
         return riot_response
     
@@ -128,7 +131,7 @@ def search_summoner(summoner_name):
 
 # champion mastery
 def load_champion_mastery(summoner_id):
-    # rest = RESTAPI(RESRAPI_KEY)
+    rest = RESTAPI(RESTAPI_KEY)
     
     # print('=====requesting REST API for champion mastery=====')
     # rest_response = rest.get_championmastery_by_summonerid(summoner_id)
@@ -153,6 +156,8 @@ def load_champion_mastery(summoner_id):
         #     print("Something went wrong while saving the sommoner to the database", rest_response.status_code)
     
     # return top 5 champions
+    
+    
     return mastery_by_points[:5]
 
 # league rank
@@ -162,7 +167,7 @@ def load_league(summoner_id):
     
     print('=====requesting RIOT API for league=====')
     riot_response = riot.get_league_by_summoner_id(summoner_id)
-    print(riot_response)
+    # print(riot_response)
     # print(riot_response[0])
     
     # rest = RESTAPI(RESRAPI_KEY)
@@ -174,11 +179,12 @@ def load_league(summoner_id):
 def load_summoner_matches(puuid):
     
     # check if summoner has matches in our database
-    rest_response = search_restapi(SearchType.MATCHES, puuid)
-    if rest_response != 404:
-        return rest_response
+    # rest_response = search_restapi(SearchType.MATCHES, puuid)
+    # if rest_response != 404:
+    #     return rest_response
     
     rest_response = search_restapi(SearchType.MATCHES, puuid)
+    # print(rest_response)
     if rest_response != 404:
         return rest_response
     
@@ -197,8 +203,8 @@ def load_summoner_matches(puuid):
         matches[match] = riot.get_match_by_match_id(match)
     
     rest = RESTAPI(RESTAPI_KEY)
-    
     for match in matches.values():
+        print("=====storing match data=====")
         rest_response = rest.post_all_match_data(match)
         if rest_response != True:
             print("Something went wrong while saving the sommoner to the database", rest_response.status_code)
@@ -219,16 +225,30 @@ def search_restapi(search_type, search_value):
             print("summoner found in database")
             return rest_response[0]
     elif search_type == SearchType.MATCHES:
-        print('=====requesting RIOT API for match ids=====')
-        # rest_response = rest.get_matchparticipant_by_puuid(search_value)
-        rest_response = rest.get_match_by_id(search_value)
+        print('=====requesting REST API for match ids=====')
+        # rest_response = rest.get_match_by_id(search_value)
+        rest_response = rest.get_matchparticipant_by_puuid(search_value)
         if len(rest_response) == 0:
+            print("matches not found in database")
             return 404
         else:
-            print("match found in database")
-            return rest_response[0]
+            print("matches found in database")
+
+            matches = dict()
+            for i,participant in enumerate(rest_response, start=0):
+                if i == 10:
+                    break
+                print(participant["matchid"])
+                # matches[participant] = rest.get_champion_by_id(participant["matchid"])
+                match_response = rest.get_match_by_id(participant["matchid"])
+                for match_data in match_response:
+                    matches[participant["matchid"]] = match_data
+                    
+            return matches
+            
+            # return rest_response[0]
     elif search_type == SearchType.LEAGUE:
-        print('=====requesting RIOT API for league=====')
+        print('=====requesting REST API for league=====')
         rest_response = rest.get_league_by_summonerid(search_value)
         if len(rest_response) == 0:
             return 404
@@ -236,7 +256,7 @@ def search_restapi(search_type, search_value):
             print("league found in database")
             return rest_response[0]
     elif search_type == SearchType.CHAMPION_MASTERY:
-        print('=====requesting RIOT API for champion mastery=====')
+        print('=====requesting REST API for champion mastery=====')
         rest_response = rest.get_championmastery_by_summonerid(search_value)
         if len(rest_response) == 0:
             return 404
