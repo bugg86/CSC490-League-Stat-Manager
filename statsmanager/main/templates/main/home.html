@@ -11,7 +11,8 @@ Home
 {% block nav %}
     {% if user.is_authenticated %}
         <a href="logout/">Logout</a> |
-        <a href="user_profile/">Profile</a>
+        <a href="user_profile/">Profile</a> |
+        <a href="favorites/">Favorite Summoners</a>
         <h4>Signed in as {{ user.username }}</h4>
     {% else %}
         <a href="register/">Register</a> |
