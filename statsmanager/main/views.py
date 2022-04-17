@@ -1,5 +1,3 @@
-from ast import Try
-from re import M
 from traceback import print_tb
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -21,6 +19,7 @@ from .forms import SummonerSearchForm
 from riotapiutilities.api import RiotApi
 from riotapiutilities.consts import REGIONS
 from lsmrestapiutilities.api import RESTAPI
+import threading
 
 # Create your views here.
 
@@ -35,6 +34,20 @@ class SearchType(Enum):
     LEAGUE = 3
     MATCHES = 4
 
+class handle_post_match_data(threading.Thread):
+    
+    def __init__(self, matches):
+        self.matches = matches
+        threading.Thread.__init__(self)
+    
+    def run(self):
+        rest = RESTAPI(RESTAPI_KEY)
+        for match in self.matches.values():
+            print("=====storing match data=====")
+            rest_response = rest.post_all_match_data(match)
+            if rest_response != True:
+                print("Something went wrong while saving the sommoner to the database", rest_response.status_code)
+        
 def home(request):
     if request.method == "GET":
         form = SummonerSearchForm(request.GET)
@@ -47,7 +60,7 @@ def home(request):
             
             try:
                 summoner_matches = load_summoner_matches(summoners['puuid'])
-                print(summoner_matches)
+                # print(summoner_matches)
                 # summoner_matches = "Hello"
             
                 league = load_league(summoners['id'])
@@ -60,6 +73,8 @@ def home(request):
                 summoner_matches = "N/A"
                 league = "N/A"
                 mastery = "N/A"
+            
+            
                 
             return render(request, 'main/summoner_info.html', {'summoner': summoners, 'matches': summoner_matches, 'league': league, 'mastery': mastery})
 
@@ -76,6 +91,8 @@ def win_perc_calculator(request):
 def summoner_info(request):
     return render(request, 'main/summoner_info.html')
 
+def favorites(request):
+    return render(request, 'main/favorites.html')
 
 def search_summoner(summoner_name):
     rest = RESTAPI(RESTAPI_KEY)
@@ -202,13 +219,14 @@ def load_summoner_matches(puuid):
         print("=====requesting RIOT API for match data for id: ", match, "=====", sep='')
         matches[match] = riot.get_match_by_match_id(match)
     
-    rest = RESTAPI(RESTAPI_KEY)
-    for match in matches.values():
-        print("=====storing match data=====")
-        rest_response = rest.post_all_match_data(match)
-        if rest_response != True:
-            print("Something went wrong while saving the sommoner to the database", rest_response.status_code)
+    # rest = RESTAPI(RESTAPI_KEY)
+    # for match in matches.values():
+    #     print("=====storing match data=====")
+    #     rest_response = rest.post_all_match_data(match)
+    #     if rest_response != True:
+    #         print("Something went wrong while saving the sommoner to the database", rest_response.status_code)
     
+    handle_post_match_data(matches).start()
     
     return matches
 
@@ -245,8 +263,6 @@ def search_restapi(search_type, search_value):
                     matches[participant["matchid"]] = match_data
                     
             return matches
-            
-            # return rest_response[0]
     elif search_type == SearchType.LEAGUE:
         print('=====requesting REST API for league=====')
         rest_response = rest.get_league_by_summonerid(search_value)
