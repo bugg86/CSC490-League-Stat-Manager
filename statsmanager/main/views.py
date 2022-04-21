@@ -20,6 +20,7 @@ from riotapiutilities.api import RiotApi
 from riotapiutilities.consts import REGIONS
 from lsmrestapiutilities.api import RESTAPI
 import threading
+import tarfile
 
 # Create your views here.
 
@@ -46,7 +47,9 @@ class handle_post_match_data(threading.Thread):
             print("=====storing match data=====")
             rest_response = rest.post_all_match_data(match)
             if rest_response != True:
-                print("Something went wrong while saving the sommoner to the database", rest_response.status_code)
+                print("Something went wrong while saving the sommoner to the database", rest_response)
+                
+
         
 def home(request):
     if request.method == "GET":
@@ -66,7 +69,7 @@ def home(request):
                 league = load_league(summoners['id'])
             
                 mastery = load_champion_mastery(summoners['id'])
-                # print(mastery)
+                print(mastery)
                 
             # if summoner does not exist in RIOT API
             except KeyError:
@@ -95,19 +98,15 @@ def favorites(request):
     return render(request, 'main/favorites.html')
 
 def search_summoner(summoner_name):
+    '''
+    Searches for a summoner
+    Keyword arguments:
+    summoner_name -- the name of the summoner to search for
+    '''
     rest = RESTAPI(RESTAPI_KEY)
     
     print("=====requesting REST API for summoner=====")
     rest_response = rest.get_summoner_by_name(summoner_name)
-    
-    
-    # url = URL['summoners'] + summoner_name
-    # rest_response = req.get(url, headers={'Authorization': RESRAPI_KEY})
-    # print(rest_response.json())
-    # summoners_json = json.loads(rest_response.text)
-    # return rest_response[0]
-    # print("printing json")
-    # print(summoners_json[0]['name'])
 
     # summoner does not exist in OUR database
     if len(rest_response) == 0:
@@ -148,14 +147,19 @@ def search_summoner(summoner_name):
 
 # champion mastery
 def load_champion_mastery(summoner_id):
+    '''
+    loads the champion mastery of a summoner
+    keyword arguments:
+    summoner_id -- the summoner id of the summoner to load the champion mastery of
+    '''
     rest = RESTAPI(RESTAPI_KEY)
     
     # print('=====requesting REST API for champion mastery=====')
-    # rest_response = rest.get_championmastery_by_summonerid(summoner_id)
+    rest_response = search_restapi(SearchType.CHAMPION_MASTERY, summoner_id)
+    if rest_response != 404:
+        return rest_response
     
-    # rest_response = search_restapi(SearchType.CHAMPION_MASTERY, summoner_id)
-    # if rest_response != 404:
-    #     return rest_response
+    print("masteries not found in database")
     
     riot = RiotApi(RIOT_KEY, REGIONS['north_america'])
     
@@ -167,8 +171,8 @@ def load_champion_mastery(summoner_id):
     # sort champions by champion points
     mastery_by_points = sorted(masteries, key=lambda x: x['championPoints'], reverse=True)
     
-    # for mastery in mastery_by_points:
-    #     rest_response = rest.post_championMastery(mastery)
+    for mastery in mastery_by_points:
+        rest_response = rest.post_championMastery(mastery)
         # if rest_response.status_code != 201:
         #     print("Something went wrong while saving the sommoner to the database", rest_response.status_code)
     
@@ -179,6 +183,11 @@ def load_champion_mastery(summoner_id):
 
 # league rank
 def load_league(summoner_id):
+    '''
+    loads the league of a summoner
+    Keyword arguments:
+    summoner_id -- the summoner id of the summoner to load the league of
+    '''
     
     riot = RiotApi(RIOT_KEY, REGIONS['north_america'])
     
@@ -191,15 +200,16 @@ def load_league(summoner_id):
     # rest_response = rest.post_league(riot_response[0])
     # the response returns an array of leagues by game mode, but we're only tracking regular league ranks.
     # we are going to ignore TFT ranks
-    return riot_response
+    return riot_response[1]
 
 def load_summoner_matches(puuid):
+    '''
+    loads 10 recent matches of a summoner
+    Keyword arguments:
+    puuid -- the puuid of the summoner to load the matches of
+    '''
     
     # check if summoner has matches in our database
-    # rest_response = search_restapi(SearchType.MATCHES, puuid)
-    # if rest_response != 404:
-    #     return rest_response
-    
     rest_response = search_restapi(SearchType.MATCHES, puuid)
     # print(rest_response)
     if rest_response != 404:
@@ -215,7 +225,6 @@ def load_summoner_matches(puuid):
     # print(riot_response)
     matches = dict()
     for match in riot_response:
-        # print("=====requesting RIOT API for match data=====")
         print("=====requesting RIOT API for match data for id: ", match, "=====", sep='')
         matches[match] = riot.get_match_by_match_id(match)
     
@@ -233,6 +242,12 @@ def load_summoner_matches(puuid):
 
 # Experimenting on optimizing the code
 def search_restapi(search_type, search_value):
+    '''
+    Queries the REST API for a summoner, matches, league, or champion mastery
+    Keyword arguments:
+    search_type -- the type of search to perform
+    search_value -- the value to search for
+    '''
     rest = RESTAPI(RESTAPI_KEY)
     if search_type == SearchType.SUMMONER:
         print("=====requesting REST API for summoner=====")
@@ -278,7 +293,16 @@ def search_restapi(search_type, search_value):
             return 404
         else:
             print("champion mastery found in database")
-            return rest_response[0]
+            # masteries = dict()
+            masteries = list()
+            for i, mastery in enumerate(rest_response, start=0):
+                if i == 10:
+                    break
+                # print(mastery)
+                # masteries[mastery["championid"]] = mastery
+                masteries.append(mastery)
+                # print(masteries)
+            return masteries
     else:
         print("Invalid search type")
         

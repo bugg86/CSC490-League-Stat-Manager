@@ -1,44 +1,47 @@
-<!DOCTYPE html>
 {% extends 'main/base.html' %}
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="../../static/main/css/style.css">
-    <!--{% comment %} <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"> {% endcomment %}-->
-    <title>{% block title %}Summoner Data{% endblock title %}</title>
-</head>
-
-<body>
-    <header>
-        {% block header %}<h1>Summoner Data Page</h1>{% endblock header %}
-    </header>
-
-    <nav>
-        {% block nav %}<a href="/">Home</a>{% endblock nav %}
-    </nav>
-
-    <article>
-        {% block article %}
-        {% if summoner %}
-        <h1>
+{% load static %}
+{% block title %}Summoner Data{% endblock title %}
+{% block nav %}<a href="/">Home</a>{% endblock nav %}
+{% block article %}
+    {% if summoner %}
+        <div class="summoner_banner", id="summoner_banner">
+            <div class="summoner_banner_child", id="summoner_banner_child">
+                <div class="profile_icon"> 
+                    {% static 'main/media/profileicon/' as profile_icon_url %}
+                    <img src="{{profile_icon_url}}{{summoner.profileiconid}}.png" alt="Summoner Icon">
+                </div>
+            </div>
+            <div class="summoner_banner_child", id="summoner_banner_child">
+                <div class="summoner_info">
+                    <h1> {{summoner.name}} </h1>
+                    <h2> Lv. {{summoner.summonerlevel}} </h2>
+                    <p> id: {{summoner.id}} </p>
+                    <p> account id: {{summoner.accountid}} </p>
+                    <p> puuid: {{summoner.puuid}} </p>
+                    <p> revision date: {{summoner.revisiondate}} </p>
+                    <h2> League </h2>
+                    <p> tier: {{league.tier}} </p>
+                </div>
+            </div>
+            
+        </div>
+        {% comment %} <h1>
+            
             <pre>{{ summoner | pprint }}</pre>
-        </h1>
+        </h1> {% endcomment %}
         <div class="Matches">
             <h2>Recent Matches</h2>
             <br />
             {% for k, v in matches.items %}
-            <details>
-                <summary>
-                    {{ k }}
-                    <br />
-                </summary>
-                <p>
-                <pre>{{ v | pprint }}</pre>
-                </p>
-            </details>
+                <details>
+                    <summary>
+                        {{ k }}
+                        <br />
+                    </summary>
+                    <p>
+                        <pre>{{ v | pprint }}</pre>
+                    </p>
+                </details>
             {% endfor %}
         </div>
         <div class="League">
@@ -50,37 +53,37 @@
             <h2>Champion Mastery</h2>
             <br />
             {% for champions in mastery%}
-            <details>
-                <summary>
-                    {{ champions.championId }}
-                    <br />
-                </summary>
-                <p>
-                <pre>{{ champions | pprint }}</pre>
-                </p>
-            </details>
+                <details>
+                    <summary>
+                        {% if 'championId' in champions %}
+                            {{ champions.championId }}
+                            <br />
+                        {% else %}
+                            {{ champions.championid }}
+                            <br />
+                        {% endif %}
+                    </summary>
+                    <p>
+                        <pre>{{ champions | pprint }}</pre>
+                    </p>
+                </details>
             {% endfor %}
             {% comment %} {% for k, v in mastery.items %}
-            <details>
-                <summary>
-                    {{ k }}
-                    <br />
-                </summary>
-                <p>
-                <pre>{{ v | pprint }}</pre>
-                </p>
-            </details>
+                <details>
+                    <summary>
+                        {{ k }}
+                        <br />
+                    </summary>
+                    <p>
+                        <pre>{{ v | pprint }}</pre>
+                    </p>
+                </details>
             {% endfor %} {% endcomment %}
         </div>
         {% comment %} <p>
-            {% endcomment %}
-            {% comment %} {% for k, v in matches.items %} {{ k }} : {{ v }}<br />{% endfor %} {% endcomment %}
-            {% comment %}
-        <pre>{{ matches.keys | pprint }}</pre> {% endcomment %}
+        {% endcomment %}
+        {% comment %} {% for k, v in matches.items %}                {{ k }} : {{ v }}<br />{% endfor %} {% endcomment %}
+        {% comment %} <pre>{{ matches.keys | pprint }}</pre> {% endcomment %}
         {% comment %} </P> {% endcomment %}
-        {% endif %}
-        {% endblock %}
-    </article>
-</body>
-
-</html>
+    {% endif %}
+{% endblock %}
