@@ -5,31 +5,111 @@
 {% block article %}
     {% if summoner %}
         <div class="summoner_banner", id="summoner_banner">
-            <div class="summoner_banner_child", id="summoner_banner_child">
+            <div class="profile_icon_container", id="profile_icon_container">
                 <div class="profile_icon"> 
                     {% static 'main/media/profileicon/' as profile_icon_url %}
-                    <img src="{{profile_icon_url}}{{summoner.profileiconid}}.png" alt="Summoner Icon">
+                    {% if 'profileIconId' in summoner %}
+                        <img src="{{profile_icon_url}}{{summoner.profileIconId}}.png" alt="Summoner Icon">
+                    {% else %}
+                        <img src="{{profile_icon_url}}{{summoner.profileiconid}}.png" alt="Summoner Icon">
+                    {% endif %}
                 </div>
-            </div>
-            <div class="summoner_banner_child", id="summoner_banner_child">
-                <div class="summoner_info">
-                    <h1> {{summoner.name}} </h1>
+                <h1> {{summoner.name}} </h1>
+                {% if 'summonerLevel' in summoner %}
+                    <h2> Lv. {{summoner.summonerLevel}} </h2>
+                {% else %}
                     <h2> Lv. {{summoner.summonerlevel}} </h2>
-                    <p> id: {{summoner.id}} </p>
+                {% endif %}
+                {% comment %} <p> id: {{summoner.id}} </p> {% endcomment %}
+                {% if 'accountId' in summoner %}
+                    <p> account id: {{summoner.accountId}} </p>
+                {% else %}
                     <p> account id: {{summoner.accountid}} </p>
-                    <p> puuid: {{summoner.puuid}} </p>
-                    <p> revision date: {{summoner.revisiondate}} </p>
-                    <h2> League </h2>
-                    <p> tier: {{league.tier}} </p>
+                {% endif %}
+                <p> puuid: {{summoner.puuid}} </p>
+            </div>
+            <div class="recent_matches_container">
+                <div class="recent_matches">
+                    <div class="Matches">
+                        <h2>Recent Matches</h2>
+                        <br />
+                        {% for k, v in matches.items %}
+                            <details>
+                                <summary>
+                                    {{ k }}
+                                    <br />
+                                </summary>
+                                <p>
+                                    <pre>{{ v | pprint }}</pre>
+                                </p>
+                            </details>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-            
+            <div class="league_info_container", id="league_info_container">
+                <h2> League </h2>
+                {% for i in league %}
+                    <div class="league_info">
+                    {% for k, v in i.items %}
+                        <p> {{k}}: {{v}} </p>
+                        {% comment %} <p> {{v}} </p> {% endcomment %}
+                    {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="champion_mastery_container">
+                <div class="champion_mastery_header"> <h2> Top Champions </h2> </div>
+                {% for champions in mastery%}
+                    <div class="champion">
+                        <div class="champion_icon">
+                            {% static 'main/media/champion/' as champion_icon_url %}
+                            {% if 'championId' in champions %}
+                                {% for i in championslst %}
+                                    {% for k, v in i.items %}
+                                        {% if k == champions.championId %}
+                                            <img src="{{champion_icon_url}}{{v}}.png" alt="Champion Icon">
+                                            <p> {{v}} </p>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                                    {% comment %} {% if i.key == champions.championId %}
+                                        <img src="{{champion_icon_url}}{{i.}}.png" alt="Champion Icon">
+                                    {% endif %}
+                                <img src="{{champion_icon_url}}{{sub[champions.]}}.png" alt="Champion Icon"> {% endcomment %}
+                            {% else %}
+                                {% for i in championslst %}
+                                    {% for k, v in i.items %}
+                                        {% if k == champions.championid %}
+                                            <img src="{{champion_icon_url}}{{v}}.png" alt="Champion Icon">
+                                            <p> {{v}} </p>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                            {% if 'championLevel' in champions %}
+                                <p> Lv. {{champions.championLevel}} </p>
+                            {% else %}
+                                <p> Lv. {{champions.championlevel}} </p>
+                            {% endif %}
+                            {% if 'championPoints' in champions %}
+                                <p> Champion Points: {{champions.championPoints}} </p>
+                            {% else %}
+                                <p> Champion Points: {{champions.championpoints}} </p>
+                            {% endif %}
+                        </div>
+                        {% comment %} <div class="champion_info">
+                            
+                        </div> {% endcomment %}
+                    </div>
+                {% endfor %}
+            </div>
         </div>
         {% comment %} <h1>
             
             <pre>{{ summoner | pprint }}</pre>
         </h1> {% endcomment %}
-        <div class="Matches">
+        {% comment %} <div class="Matches">
             <h2>Recent Matches</h2>
             <br />
             {% for k, v in matches.items %}
@@ -67,7 +147,7 @@
                         <pre>{{ champions | pprint }}</pre>
                     </p>
                 </details>
-            {% endfor %}
+            {% endfor %} {% endcomment %}
             {% comment %} {% for k, v in mastery.items %}
                 <details>
                     <summary>
@@ -79,7 +159,7 @@
                     </p>
                 </details>
             {% endfor %} {% endcomment %}
-        </div>
+        {% comment %} </div> {% endcomment %}
         {% comment %} <p>
         {% endcomment %}
         {% comment %} {% for k, v in matches.items %}                {{ k }} : {{ v }}<br />{% endfor %} {% endcomment %}
