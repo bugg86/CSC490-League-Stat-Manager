@@ -1,12 +1,34 @@
 {% extends 'main/base.html' %}
+{% load static %}
 {% block title %}Summoner Data{% endblock title %}
-{% block header %}<h1>Summoner Data Page</h1>{% endblock header %}
 {% block nav %}<a href="/">Home</a>{% endblock nav %}
 {% block article %}
     {% if summoner %}
-        <h1>
+        <div class="summoner_banner", id="summoner_banner">
+            <div class="summoner_banner_child", id="summoner_banner_child">
+                <div class="profile_icon"> 
+                    {% static 'main/media/profileicon/' as profile_icon_url %}
+                    <img src="{{profile_icon_url}}{{summoner.profileiconid}}.png" alt="Summoner Icon">
+                </div>
+            </div>
+            <div class="summoner_banner_child", id="summoner_banner_child">
+                <div class="summoner_info">
+                    <h1> {{summoner.name}} </h1>
+                    <h2> Lv. {{summoner.summonerlevel}} </h2>
+                    <p> id: {{summoner.id}} </p>
+                    <p> account id: {{summoner.accountid}} </p>
+                    <p> puuid: {{summoner.puuid}} </p>
+                    <p> revision date: {{summoner.revisiondate}} </p>
+                    <h2> League </h2>
+                    <p> tier: {{league.tier}} </p>
+                </div>
+            </div>
+            
+        </div>
+        {% comment %} <h1>
+            
             <pre>{{ summoner | pprint }}</pre>
-        </h1>
+        </h1> {% endcomment %}
         <div class="Matches">
             <h2>Recent Matches</h2>
             <br />
@@ -33,8 +55,13 @@
             {% for champions in mastery%}
                 <details>
                     <summary>
-                        {{ champions.championId }}
-                        <br />
+                        {% if 'championId' in champions %}
+                            {{ champions.championId }}
+                            <br />
+                        {% else %}
+                            {{ champions.championid }}
+                            <br />
+                        {% endif %}
                     </summary>
                     <p>
                         <pre>{{ champions | pprint }}</pre>
