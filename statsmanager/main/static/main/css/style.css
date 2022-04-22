@@ -169,3 +169,9 @@ nav a:hover{
     grid-column-start: 1;
     grid-column-end: 4;
 }
+
+.password {
+    display:flex;
+    justify-content:center;
+    text-align: center;
+}
