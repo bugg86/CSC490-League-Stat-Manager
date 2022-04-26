@@ -4,18 +4,18 @@
 
 {% block title %}Register{% endblock %}
 
-{% block header %} <h1> Register </h1> {% endblock %}
+{% block header %} <h1 class="password"> Register </h1> {% endblock %}
 
 {% load crispy_forms_tags %}
 
 {% block article %}
 	<div class="content-section">
-		<form method="POST" class="register-form-group">
+		<form method="POST" class="register-form-group" style="display: block; margin-left: auto; margin-right: auto;">
 			{% csrf_token %}
-			<legend class="border-bottom mb-3"> <h3>Create an Account</h3></legend>
+			<legend class="border-bottom mb-3"> <h3 class="password">Create an Account</h3></legend>
 			{{form|crispy}}
-			<button name="create", type="submit", class="btn btn-success">Register</button>
-			<p>Already have an account? <a href='/login'>Log in</a></p>
+			<button name="create", type="submit", class="btn btn-success" style="display: block; margin-left: auto; margin-right: auto;">Register</button>
+			<p class="password">Already have an account? <a href='/login'>Log in</a></p>
 		</form>
 	</div>
 {% endblock %}

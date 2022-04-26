@@ -4,17 +4,19 @@
 
 {% block title %} Log in {% endblock %}
 
-{% block header %} <h1> Log in </h1> {% endblock %}
+{% block header %} <h1 class="password"> Log in </h1> {% endblock %}
 
 {% load crispy_forms_tags %}
 
 {% block article %}
     <div class="content-section">
-        <form method="POST" class="login-form-group">
+        <form method="POST" class="login-form-group" style="display: block; margin-left: auto; margin-right: auto;">
             {% csrf_token %}
             {{form|crispy}}
-            <button type="submit" class="btn btn-primary">Sign in</button>
+            <br>
+            <button type="submit" class="btn btn-primary" style="display: block; margin-left: auto; margin-right: auto;">Sign in</button>
     </div>
-    <p>Don't have an account? <a href="/register">Register</a></p>
-    <a href="{% url 'password_reset' %}">Forgot password?</a>
+    <br>
+    <p class="password">Don't have an account? &nbsp <a href="/register">Register</a></p>
+    <a href="{% url 'password_reset' %}" class="password">Forgot password?</a>
 {% endblock %}
